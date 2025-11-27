@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/authdb
+    username: ${SPRING_DATASOURCE_USERNAME:authuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:authpass}
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+security:
+  jwt:
+    secret: ${SECURITY_JWT_SECRET:dev-secret-change-me-please-please-and-be-at-least-64-characters-long}
+    access-token-validity-seconds: ${SECURITY_JWT_ACCESS_TOKEN_VALIDITY_SECONDS:900}
+    refresh-token-validity-seconds: ${SECURITY_JWT_REFRESH_TOKEN_VALIDITY_SECONDS:604800}
