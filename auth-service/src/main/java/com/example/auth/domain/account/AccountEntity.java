@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
+// 로그인 공급자별 인증 정보를 저장하는 계정 엔티티로, 하나의 사용자(UserEntity)에 여러 계정이 연결될 수 있다.
 @Entity
 @Table(name = "accounts", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"provider", "provider_id"})

@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+// 사용자 식별 정보와 상태를 보유하는 도메인 루트로, 여러 AccountEntity를 자식으로 가진다.
 @Entity
 @Table(name = "users")
 public class UserEntity {
