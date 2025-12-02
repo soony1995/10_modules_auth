@@ -14,6 +14,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - auth-shared
 
   redis:
     image: redis:7-alpine
@@ -27,6 +29,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - auth-shared
 
   auth-service:
     build:
@@ -48,7 +52,6 @@ services:
     ports:
       - "8082:8080"
     networks:
-      - default
       - auth-shared
 
 volumes:
