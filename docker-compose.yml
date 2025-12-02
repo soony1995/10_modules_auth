@@ -15,7 +15,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - auth-shared
+      - 10_modules
 
   redis:
     image: redis:7-alpine
@@ -30,7 +30,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - auth-shared
+      - 10_modules
 
   auth-service:
     build:
@@ -52,13 +52,13 @@ services:
     ports:
       - "8082:8080"
     networks:
-      - auth-shared
+      - 10_modules
 
 volumes:
   pg-data:
   redis-data:
 
 networks:
-  auth-shared:
+  10_modules:
     external: true
-    name: auth-shared
+    name: 10_modules
