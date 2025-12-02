@@ -9,6 +9,7 @@ import com.example.auth.web.dto.UserResponse;
 import com.example.auth.web.dto.ValidateResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,12 +33,14 @@ public class AuthController {
 
     @PostMapping("/api/v1/auth/login")
     public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+        TokenResponse tokenResponse = authService.login(request);
+        return withAccessTokenCookie(tokenResponse);
     }
 
     @PostMapping("/api/v1/auth/refresh")
     public ResponseEntity<TokenResponse> refresh(@Valid @RequestBody RefreshRequest request) {
-        return ResponseEntity.ok(authService.refresh(request));
+        TokenResponse tokenResponse = authService.refresh(request);
+        return withAccessTokenCookie(tokenResponse);
     }
 
     @GetMapping("/api/v1/auth/validate")
@@ -46,5 +49,19 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header("X-User-Id", response.userId().toString())
                 .body(response);
+    }
+
+    private ResponseEntity<TokenResponse> withAccessTokenCookie(TokenResponse tokenResponse) {
+        ResponseCookie accessTokenCookie = ResponseCookie.from("token", tokenResponse.accessToken())
+                .httpOnly(true)
+                .path("/")
+                .sameSite("Lax")
+                .maxAge(tokenResponse.expiresIn())
+                .secure(false)
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+                .body(tokenResponse);
     }
 }
