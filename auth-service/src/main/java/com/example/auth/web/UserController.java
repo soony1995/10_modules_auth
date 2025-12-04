@@ -5,6 +5,9 @@ import com.example.auth.exception.ApiException;
 import com.example.auth.security.UserPrincipal;
 import com.example.auth.service.UserService;
 import com.example.auth.web.dto.UserResponse;
+
+import java.net.http.HttpHeaders;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +29,10 @@ public class UserController {
             throw new ApiException(HttpStatus.UNAUTHORIZED, "Authentication required");
         }
         UserEntity user = userService.getById(principal.getId());
-        return ResponseEntity.ok(new UserResponse(user.getId(), user.getEmail(), user.getNickname(), user.getRole().name()));
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.noStore())
+                .header(HttpHeaders.PRAGMA, "no-cache")
+                .header(HttpHeaders.EXPIRES, "0")
+                .body(new UserResponse(user.getId(), user.getEmail(), user.getNickname(), user.getRole().name()));
     }
 }
