@@ -6,8 +6,8 @@ import com.example.auth.security.UserPrincipal;
 import com.example.auth.service.UserService;
 import com.example.auth.web.dto.UserResponse;
 
-import java.net.http.HttpHeaders;
-
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
